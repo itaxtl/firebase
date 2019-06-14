@@ -121,7 +121,7 @@ function contenidosUsuarioRegistrado(usuario) {
           <label for="quien" class="col-sm-2 col-form-label">Quién: </label>
           <input type="number" id="quien" placeholder="Introduce tus datos" class="form-control my-3 col-sm-4" minlength="1" maxlenght="120">
         </div>
-      <button class="btn btn-light my-3" id="guardar">Guardar</button>
+      <button class="btn btn-secondary my-3" id="guardar">Guardar</button>
       <div id="act"></div>
 
       <table class="table">
@@ -179,13 +179,13 @@ function cerrar() {
       </div>
       `;
       cerrarconexion.innerHTML = "";
-       $("#salir").empty();
+      $("#salir").empty();
     })
     .catch(function (error) {
       console.log(error);
     });
-    // revisar esto
- 
+  // revisar esto
+
 }
 
 function confirmar() {
@@ -265,7 +265,7 @@ function cargarTabla() {
 
 // Borrar datos de documentos
 function borrarDatos(parId, parTipTerritorio, parTerritorio) {
-  var re = confirm("Vas a borrar estos datos: " + " - Tipo " + parTipTerritorio + " - Territorio " + parTerritorio + '...' + "<br>" + "<strong>¿Estas seguro?</strong>");
+  var re = confirm("Vas a borrar estos datos: " + " - Tipo " + parTipTerritorio + " - Territorio " + parTerritorio + '...' + " ¿Estas seguro?");
   if (re == true) {
     db.collection("usuarios").doc(parId).delete()
       .then(function () {
@@ -334,4 +334,3 @@ new Date().getFullYear() + "/" + new Date().getMonth() + "/" + new Date().getDat
 }
 
 observador();
-
