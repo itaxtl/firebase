@@ -89,50 +89,50 @@ function contenidosUsuarioRegistrado(usuario) {
     contenido.innerHTML = `
       <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
         <h4 class="alert-heading">¡Bienvenido ${usuario.email}!</h4>
-        <p>Siéntete a gusto en nuestro portal.</p>
         <hr>
-        <p class="mb-0">Tenemos muchos contenidos exclusivos solo para usuarios registrados como tú.</p>
+        <p class="mb-0">Contenidos exclusivos solo para comerciales registrados.</p>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
 
-      <h2>Agregar acciones para comercial ${usuario.email}</h2>
+      <h2>Gestión comercial: ${usuario.email}</h2>
         <div class="form-inline">
           <label for="tipTerritorio" class="col-sm-2 col-form-label">Tipo Territorio: </label>
-          <input type="text" id="tipTerritorio" placeholder="Introduce código territorio" class="form-control my-3 col-sm-4" pattern="^\d[0-1][0-9]$">
+          <input type="number" id="tipTerritorio" placeholder="Introduce código territorio" class="form-control my-3 col-sm-4" maxlength="10" minlength="1">
         </div>
         <div class="form-inline">
           <label for="territorio" class="col-sm-2 col-form-label">Territorio: </label>
-          <input type="text" id="territorio" placeholder="Introduce un territorio" class="form-control my-3 col-sm-4" maxlenght="50" pattern="">
+          <input type="number" id="territorio" placeholder="Introduce un territorio" class="form-control my-3 col-sm-4" maxlenght="50" maxlength="300" minlength="1">
         </div>
         <div class="form-inline">
           <label for="fInicio" class="col-sm-2 col-form-label">Fecha de inicio: </label>
-          <input type="text" id="fInicio" placeholder="Introduce fecha de inicio" class="form-control my-3 col-sm-1" maxlenght="4" pattern="">
+          <input type="date" id="fInicio" placeholder="Introduce fecha de inicio" class="form-control my-3 col-sm-2" pattern="">
         </div>
         <div class="form-inline">
           <label for="fFin" class="col-sm-2 col-form-label">Fecha de fin: </label>
-          <input type="text" id="fFin" placeholder="Introduce fecha de fin" class="form-control my-3 col-sm-1" maxlenght="4" pattern="">
+          <input type="date" id="fFin" placeholder="Introduce fecha de fin" class="form-control my-3 col-sm-2" pattern="">
         </div>
         <div class="form-inline">
-          <label for="cuando" class="col-sm-2 col-form-label">Cuando: </label>
-          <input type="text" id="cuando" placeholder="Introduce cuando" class="form-control my-3 col-sm-4" maxlenght="50" pattern="[a-zA-ZÁáÀàÉéÈèÍíÌìÓóÒòÚúÙùÑñüÜ0-9!@#\$%\^&\*\?_~\/]{10,50}]" >
-        </div>
+          <label for="cuando" class="col-sm-2 col-form-label">Cuándo: </label>
+          <textarea id="cuando" rows="4" cols="50" placeholder="Introduce cuando" class="form-control my-3 col-sm-4" maxlenght="50"></textarea>
+          </div>
         <div class="form-inline">
           <label for="quien" class="col-sm-2 col-form-label">Quién: </label>
-          <input type="text" id="quien" placeholder="Introduce tus datos" class="form-control my-3 col-sm-4" maxlenght="50" pattern="[a-zA-Z]{0,50}*">
+          <input type="number" id="quien" placeholder="Introduce tus datos" class="form-control my-3 col-sm-4" minlength="1" maxlenght="120">
         </div>
-      <button class="btn btn-info my-3" id="guardar">Guardar</button>
+      <button class="btn btn-light my-3" id="guardar">Guardar</button>
+      <div id="act"></div>
 
       <table class="table">
         <thead class="thead-dark">
           <tr>
-            <th scope="col">ID</th>
+            <th scope="col">- ID -</th>
             <th scope="col">Tipo Territorio</th>
             <th scope="col">Territorio</th>
             <th scope="col">Fecha Inicio</th>
             <th scope="col">Fecha Fin</th>
-            <th scope="col">Cuando</th>
+            <th scope="col">Cuándo</th>
             <th scope="col">Quién</th>
             <th scope="col">Editar</th>
             <th scope="col">Eliminar</th>
@@ -179,11 +179,13 @@ function cerrar() {
       </div>
       `;
       cerrarconexion.innerHTML = "";
+       $("#salir").empty();
     })
     .catch(function (error) {
       console.log(error);
     });
-    $("salir").fadeOut(5000);
+    // revisar esto
+ 
 }
 
 function confirmar() {
@@ -205,32 +207,38 @@ function guardar() {
   fFin = document.getElementById("fFin").value;
   cuando = document.getElementById("cuando").value;
   quien = document.getElementById("quien").value;
-  if(tipTerritorio.trim() === "" || territorio.trim() === "" || fInicio.trim() === "" || fFin.trim() === "" || cuando.trim() === "" || quien.trim() === ""){
+  if (tipTerritorio.trim() === "" || territorio.trim() === "" || fInicio.trim() === "" || fFin.trim() === "" || cuando.trim() === "" || quien.trim() === "") {
     alert("Todos los datos son obligatorios. Rellena segun formulario.");
   } else {
-  var usuario = {
-    tipTerritorio: tipTerritorio,
-    territorio: territorio,
-    fInicio: fInicio,
-    fFin: fFin,
-    cuando: cuando,
-    quien: quien
-  };
+    /* var a = "15/06/2019"
+var fecha = a.split("/").reversr().join("/")
+var j = new Date(fecha)
 
-  db.collection("usuarios").add(usuario)
-  .then(function (docRef) {
-    console.log("Documento escrito con ID: ", docRef.id);
-    document.getElementById("tipTerritorio").value = "";
-    document.getElementById("territorio").value = "";
-    document.getElementById("fInicio").value = "";
-    document.getElementById("fFin").value = "";
-    document.getElementById("cuando").value = "";
-    document.getElementById("quien").value = "";
-  })
-  .catch(function (error) {
-    console.error("Error añadiendo el documento: ", error);
-  });
-}
+new Date().getFullYear() + "/" + new Date().getMonth() + "/" + new Date().getDate()
+*/
+    var usuario = {
+      tipTerritorio: tipTerritorio,
+      territorio: territorio,
+      fInicio: fInicio,
+      fFin: fFin,
+      cuando: cuando,
+      quien: quien
+    };
+
+    db.collection("usuarios").add(usuario)
+      .then(function (docRef) {
+        console.log("Documento escrito con ID: ", docRef.id);
+        document.getElementById("tipTerritorio").value = "";
+        document.getElementById("territorio").value = "";
+        document.getElementById("fInicio").value = "";
+        document.getElementById("fFin").value = "";
+        document.getElementById("cuando").value = "";
+        document.getElementById("quien").value = "";
+      })
+      .catch(function (error) {
+        console.error("Error añadiendo el documento: ", error);
+      });
+  }
 }
 // Lectura de los documentos
 function cargarTabla() {
@@ -248,7 +256,7 @@ function cargarTabla() {
           <td>${doc.data().cuando}</td>
           <td>${doc.data().quien}</td>
           <td><button class="text-success alert-success btn"  onclick="editarDatos('${doc.id}', '${doc.data().tipTerritorio}', '${doc.data().territorio}', '${doc.data().fInicio}', '${doc.data().fFin}', '${doc.data().cuando}', '${doc.data().quien}' );"><i class="far fa-edit"></i></button></td>
-          <td><button class="text-danger alert-danger btn" onclick="borrarDatos('${doc.id}');"><i class="far fa-trash-alt"></i></button></td>
+          <td><button class="text-danger alert-danger btn" onclick="borrarDatos('${doc.id}', '${doc.data().tipTerritorio}', '${doc.data().territorio}', '${doc.data().fInicio}', '${doc.data().fFin}', '${doc.data().cuando}', '${doc.data().quien}');"><i class="far fa-trash-alt"></i></button></td>
         </tr>
       `;
     });
@@ -256,13 +264,16 @@ function cargarTabla() {
 }
 
 // Borrar datos de documentos
-function borrarDatos(parId) {
-  db.collection("usuarios").doc(parId).delete()
-    .then(function () {
-      console.log("Usuario borrado correctamente.");
-    }).catch(function (error) {
-      console.error("Error borrando el usuario: ", error);
-    });
+function borrarDatos(parId, parTipTerritorio, parTerritorio) {
+  var re = confirm("Vas a borrar estos datos: " + " - Tipo " + parTipTerritorio + " - Territorio " + parTerritorio + '...' + "<br>" + "<strong>¿Estas seguro?</strong>");
+  if (re == true) {
+    db.collection("usuarios").doc(parId).delete()
+      .then(function () {
+        console.log("Usuario borrado correctamente.");
+      }).catch(function (error) {
+        console.error("Error borrando el usuario: ", error);
+      });
+  }
 }
 
 // Editar datos de documentos
@@ -273,32 +284,54 @@ function editarDatos(parId, parTipTerritorio, parTerritorio, parFinicio, parFfin
   document.getElementById("fFin").value = parFfin;
   document.getElementById("cuando").value = parCuando;
   document.getElementById("quien").value = parQuien;
-  var bot = document.getElementById("actualizar");
-  $("#guardar").attr("id", "actualizar");
-
-  bot.removeEventListener('click', guardar, false);
-
-  bot.addEventListener("click", function () {
+  $("#guardar").css("display", "none");
+  $(".linea").attr("disabled", true);
+  $("#act").append("<button class='btn btn-info my-3' id='actualizar'>Guardar</button>");
+  $("#actualizar").on("click", function () {
     var userRef = db.collection("usuarios").doc(parId);
+    tipTerritorio = document.getElementById("tipTerritorio").value;
+    territorio = document.getElementById("territorio").value;
+    fInicio = document.getElementById("fInicio").value;
+    fFin = document.getElementById("fFin").value;
+    cuando = document.getElementById("cuando").value;
+    quien = document.getElementById("quien").value;
 
-    return userRef.update({
-        tipTerritorio: document.getElementById("tipTerritorio").value,
-        territorio: document.getElementById("territorio").value,
-        fInicio: document.getElementById("fInicio").value,
-        fFin: document.getElementById("fFin").value,
-        cuando: document.getElementById("cuando").value,
-        quien: document.getElementById("quien").value
-      })
-      .then(function () {
-        console.log("Usuario actualizado correctamente.");
-        $("#actualizar").attr("id", "guardar");
-        bot.addEventListener('click', guardar, false);
-      })
-      .catch(function (error) {
-        // The document probably doesn't exist.
-        console.error("Error actualizando usuario: ", error);
-      });
-  }, false);
+    if (tipTerritorio.trim() === "" || territorio.trim() === "" || fInicio.trim() === "" || fFin.trim() === "" || cuando.trim() === "" || quien.trim() === "") {
+      alert("Todos los campos son obligatorios");
+    } else {
+      /* var a = "15/06/2019"
+var fecha = a.split("/").reversr().join("/")
+var j = new Date(fecha)
+
+new Date().getFullYear() + "/" + new Date().getMonth() + "/" + new Date().getDate()
+*/
+      return userRef.update({
+          tipTerritorio: document.getElementById("tipTerritorio").value,
+          territorio: document.getElementById("territorio").value,
+          fInicio: document.getElementById("fInicio").value,
+          fFin: document.getElementById("fFin").value,
+          cuando: document.getElementById("cuando").value,
+          quien: document.getElementById("quien").value
+        })
+        .then(function () {
+          console.log("Gestión actualizada correctamente.");
+          document.getElementById("tipTerritorio").value = "";
+          document.getElementById("territorio").value = "";
+          document.getElementById("fInicio").value = "";
+          document.getElementById("fFin").value = "";
+          document.getElementById("cuando").value = "";
+          document.getElementById("quien").value = "";
+          $("#guardar").css("display", "inline");
+          $(".linea").attr("disabled", false);
+          $("#act").empty();
+        })
+        .catch(function (error) {
+          // The document probably doesn't exist.
+          console.error("Error actualizando gestión: ", error);
+        });
+    }
+  })
 }
 
 observador();
+
