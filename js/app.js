@@ -77,15 +77,22 @@ function observador() {
       console.log("No existe ningún usuario activo.");
       var contenido = document.getElementById("contenido");
       contenido.innerHTML = `
-      <p class="col-sm-8 col-xl-4">Conéctate para ver los contenidos exclusivos para usuarios registrados.</p>
+      <p class="col-sm-8 col-xl-5">Conecta para acceder a tu cuenta de registros.</p>
       `;
     }
   });
 }
-// revisar los pattern
-function contenidosUsuarioRegistrado(usuario) {
+
+function contenidosUsuarioRegistrado(usuario, fechaActual) {
   var contenido = document.getElementById("contenido");
   if (usuario.emailVerified) {
+    // if((new Date).getMonth() + 1) < 10) {
+    //   var mes = "0" + (new Date().getMonth() + 1);
+    // } else {
+    //   var mes = (new Date().getMonth() +1);
+    // }
+    // let fechaActual = (new Date().getFullYear()) + "/" + mes + "/" + (new Date().getDate());
+
     contenido.innerHTML = `
       <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
         <h4 class="alert-heading">¡Bienvenido ${usuario.email}!</h4>
@@ -96,35 +103,41 @@ function contenidosUsuarioRegistrado(usuario) {
         </button>
       </div>
 
-      <h2>Gestión comercial: ${usuario.email}</h2>
+      <h3 style="color:rgba(247, 247, 247); padding: 1.5em; border-radius: .5em; background: rgba(65, 105, 225, .9); margin: 1em 0 2em 0;">Gestión itinerarios de:<strong> ${usuario.email}</strong></h3>
         <div class="form-inline">
-          <label for="tipTerritorio" class="col-sm-2 col-form-label">Tipo Territorio: </label>
-          <input type="number" id="tipTerritorio" placeholder="Introduce código territorio" class="form-control my-3 col-sm-4" maxlength="10" minlength="1" pattern="^(?:[1-9]|0[1-9]|10)$">
+        <label for="tipTerritorio" class="col-sm-2 col-form-label">Tipo Territorio:</label>
+        <span class="text-danger mr-3" title="contenido obligatorio">*</span>
+          <input type="number" id="tipTerritorio" onchange="valTipTerritorio(tipTerritorio);" placeholder="Introduce código territorio" class="form-control my-3 col-5 col-sm-4 mr-3" maxlength="10" minlength="1" pattern="^(?:[1-9]|0[1-9]|10)$" required><span id="okTipTerritorio" style="display:none;"><i class="fas fa-check"></i><span>
         </div>
         <div class="form-inline">
-          <label for="territorio" class="col-sm-2 col-form-label">Territorio: </label>
-          <input type="number" id="territorio" placeholder="Introduce un territorio" class="form-control my-3 col-sm-4" maxlenght="50" maxlength="300" minlength="1" pattern="^(?:[1-9]\d?|[12]\d{2}|300)$">
+        <label for="territorio" class="col-sm-2 col-form-label">Territorio: </label>
+        <span class="text-danger mr-3" title="contenido obligatorio">*</span>
+          <input type="number" id="territorio" onchange="valTerritorio(territorio);" placeholder="Introduce un territorio" class="form-control my-3 col-sm-4 mr-3" maxlenght="50" maxlength="300" minlength="1" pattern="^(?:[1-9]\d?|[12]\d{2}|300)$" required><span id="okTerritorio" style="display:none;"><i class="fas fa-check"></i><span>
         </div>
         <div class="form-inline">
-          <label for="fInicio" class="col-sm-2 col-form-label">Fecha de inicio: </label>
-          <input type="date" id="fInicio" placeholder="Introduce fecha de inicio" class="form-control my-3 col-sm-2" pattern="">
+        <label for="fInicio" class="col-sm-2 col-form-label">Fecha de inicio: </label>
+        <span class="text-danger mr-3" title="contenido obligatorio">*</span>
+          <input type="date" id="fInicio" onchange="valfInicio(fInicio);" placeholder="Introduce fecha de inicio" class="form-control my-3 col-sm-2 mr-3" required><span id="okfInicio" style="display:none;"><i class="fas fa-check"></i><span>
         </div>
         <div class="form-inline">
-          <label for="fFin" class="col-sm-2 col-form-label">Fecha de fin: </label>
-          <input type="date" id="fFin" placeholder="Introduce fecha de fin" class="form-control my-3 col-sm-2" pattern="">
+        <label for="fFin" class="col-sm-2 col-form-label">Fecha de fin: </label>
+        <span class="text-danger mr-3" title="contenido obligatorio">*</span>
+          <input type="date" id="fFin" onchange="comparaFecha(fInicio, fFin);" placeholder="Introduce fecha de fin" class="form-control my-3 col-sm-2 mr-3" required><span id="okfFin" style="display:none;"><i class="fas fa-check"></i><span>
         </div>
         <div class="form-inline">
-          <label for="cuando" class="col-sm-2 col-form-label">Cuándo: </label>
-          <textarea id="cuando" rows="4" cols="50" placeholder="Introduce cuando" class="form-control my-3 col-sm-4" maxlenght="50"></textarea>
+        <label for="cuando" class="col-sm-2 col-form-label">Cuándo: </label>
+        <span class="text-danger mr-3" title="contenido obligatorio">*</span>
+          <textarea id="cuando" onchange="valCuando(cuando)" rows="4" cols="50" placeholder="Introduce cuando" class="form-control my-3 col-sm-4 mr-3" maxlenght="50" required></textarea><span id="okCuando" style="display:none;"><i class="fas fa-check"></i><span>
           </div>
         <div class="form-inline">
-          <label for="quien" class="col-sm-2 col-form-label">Quién: </label>
-          <input type="number" id="quien" placeholder="Introduce tus datos" class="form-control my-3 col-sm-4" minlength="1" maxlenght="120" pattern="^(12[0-0]|1[01][0-9]|[1-9][0-9])$">
+        <label for="quien" class="col-sm-2 col-form-label">Quién: </label>
+        <span class="text-danger mr-3" title="contenido obligatorio">*</span>
+          <input type="number" id="quien" onchange="valQuien(quien)" placeholder="Introduce tus datos" class="form-control my-3 col-sm-4  mr-3" minlength="1" maxlenght="120" pattern="^(12[0-0]|1[01][0-9]|[1-9][0-9])$" required><span id="okQuien" style="display:none;"><i class="fas fa-check"></i><span>
         </div>
       <button class="btn btn-secondary my-3" id="guardar">Guardar</button>
       <div id="act"></div>
 
-      <table class="table">
+      <table class="table container">
         <thead class="thead-dark">
           <tr>
             <th scope="col">- ID -</th>
@@ -179,7 +192,7 @@ function cerrar() {
       </div>
       `;
       cerrarconexion.innerHTML = "";
-      $("#salir").empty();
+      // $("#salir").empty();
     })
     .catch(function (error) {
       console.log(error);
@@ -299,12 +312,6 @@ function editarDatos(parId, parTipTerritorio, parTerritorio, parFinicio, parFfin
     if (tipTerritorio.trim() === "" || territorio.trim() === "" || fInicio.trim() === "" || fFin.trim() === "" || cuando.trim() === "" || quien.trim() === "") {
       alert("Todos los campos son obligatorios");
     } else {
-      /* var a = "15/06/2019"
-var fecha = a.split("/").reversr().join("/")
-var j = new Date(fecha)
-
-new Date().getFullYear() + "/" + new Date().getMonth() + "/" + new Date().getDate()
-*/
       return userRef.update({
           tipTerritorio: document.getElementById("tipTerritorio").value,
           territorio: document.getElementById("territorio").value,
@@ -321,6 +328,12 @@ new Date().getFullYear() + "/" + new Date().getMonth() + "/" + new Date().getDat
           document.getElementById("fFin").value = "";
           document.getElementById("cuando").value = "";
           document.getElementById("quien").value = "";
+          $("#okTipTerritorio").hide();
+          $("#okTerritorio").hide();
+          $("#okFInicio").hide();
+          $("#okfFin").hide();
+          $("#okCuando").hide();
+          $("#okQuien").hide();
           $("#guardar").css("display", "inline");
           $(".linea").attr("disabled", false);
           $("#act").empty();
@@ -333,4 +346,68 @@ new Date().getFullYear() + "/" + new Date().getMonth() + "/" + new Date().getDat
   })
 }
 
+function valTipTerritorio(tipTerritorio) {
+  var expVTipTerritorio = new RegExp("^(?:[1-9]|0[1-9]|10)$");
+  if (expVTipTerritorio.test(tipTerritorio.value)) {
+    $("#okTipTerritorio").show();
+  } else {
+    alert(tipTerritorio.value + " Introduzca código de tipo de territorio correctamente.");
+    document.getElementById("tipTerritorio").focus();
+    return false;
+  }
+}
+
+function valTerritorio(territorio) {
+  var expTerritorio = new RegExp("^(?:[1-9]\d?|[12]\d{2}|300)$");
+  if (expTerritorio.test(territorio.value)) {
+    $("#okTerritorio").show();
+  } else {
+    alert(territorio.value + " Introduzca código de territorio correctamente.");
+    document.getElementById("territorio").focus();
+    return false;
+  }
+}
+
+function valFInicio(fInicio) {
+  if (fInicio.value <= Date()) {
+    $("#okfInicio").show();
+  } else {
+    alert(fInicio.value + " No es correcta.");
+    document.getElementById("fInicio").focus();
+    return false;
+  }
+}
+
+function comparaFecha(fInicio, fFin) {
+  if (fFin.value < fInicio.value) {
+    alert("La no puede ser anterior a la fecha de inicio");
+    document.getElementById("fFin").focus();
+    return false;
+  } else {
+    $("#okfFin").show();
+  }
+}
+
+function valCuando(cuando) {
+  var expCuando = new RegExp("^[a-zA-Z0-9,.!? ]*$");
+  var compCuando = (cuando.value).trim();
+  if (expCuando.test(compCuando)) {
+    $("#okCuando").show();
+  } else {
+    alert(cuando.value + " No es correcto");
+    document.getElementById("cuando").focus();
+    return false;
+  }
+}
+
+function valQuien(quien) {
+  var expQuien = new RegExp("^(12[0-0]|1[01][0-9]|[1-9]?[0-9])$");
+  if (expQuien.test(quien.value)) {
+    $("#okQuien").show();
+  } else {
+    alert(quien.value + " No es correcto. Su identificación(1-120)");
+    document.getElementById("quien").focus();
+    return false;
+  }
+}
 observador();

@@ -26,6 +26,7 @@ footer {
   position: fixed;
   bottom: 0;
 }
-.destaca {
- color: rgba(247, 247, 247, 0.712);
+
+h2 {
+  font-size: 3em;
 }
