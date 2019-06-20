@@ -99,11 +99,11 @@ function contenidosUsuarioRegistrado(usuario) {
       <h2>Gestión comercial: ${usuario.email}</h2>
         <div class="form-inline">
           <label for="tipTerritorio" class="col-sm-2 col-form-label">Tipo Territorio: </label>
-          <input type="number" id="tipTerritorio" placeholder="Introduce código territorio" class="form-control my-3 col-sm-4" maxlength="10" minlength="1">
+          <input type="number" id="tipTerritorio" placeholder="Introduce código territorio" class="form-control my-3 col-sm-4" maxlength="10" minlength="1" pattern="^(?:[1-9]|0[1-9]|10)$">
         </div>
         <div class="form-inline">
           <label for="territorio" class="col-sm-2 col-form-label">Territorio: </label>
-          <input type="number" id="territorio" placeholder="Introduce un territorio" class="form-control my-3 col-sm-4" maxlenght="50" maxlength="300" minlength="1">
+          <input type="number" id="territorio" placeholder="Introduce un territorio" class="form-control my-3 col-sm-4" maxlenght="50" maxlength="300" minlength="1" pattern="^(?:[1-9]\d?|[12]\d{2}|300)$">
         </div>
         <div class="form-inline">
           <label for="fInicio" class="col-sm-2 col-form-label">Fecha de inicio: </label>
@@ -119,7 +119,7 @@ function contenidosUsuarioRegistrado(usuario) {
           </div>
         <div class="form-inline">
           <label for="quien" class="col-sm-2 col-form-label">Quién: </label>
-          <input type="number" id="quien" placeholder="Introduce tus datos" class="form-control my-3 col-sm-4" minlength="1" maxlenght="120">
+          <input type="number" id="quien" placeholder="Introduce tus datos" class="form-control my-3 col-sm-4" minlength="1" maxlenght="120" pattern="^(12[0-0]|1[01][0-9]|[1-9][0-9])$">
         </div>
       <button class="btn btn-secondary my-3" id="guardar">Guardar</button>
       <div id="act"></div>
