@@ -1,0 +1,9 @@
+idioma : node_js
+node_js :
+  - " 7 "
+guión :
+- echo "Deploy !!"
+instalar :
+  - npm install -g firebase-tools
+after_success :
+  - despliegue de base de fuego - proyecto mi-proyecto-150d9 - token $ FIREBASE_TOKEN
